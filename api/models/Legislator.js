@@ -8,28 +8,35 @@
 module.exports = {
 
   attributes: {
-    name: { type: 'String' },
-    party: { type: 'String' }
+    name: { type: 'string' },
+    party: { type: 'string', enum: ['Democrat', 'Republican', 'Green', 'Independent', 'Other'] },
+    chamber: { type: 'string', enum: ['House', 'Senate', 'Administration'] },
+    district: { type: 'string' },
+    caucuses: { type: 'array' },
+    photo: { type: 'string' },
+    websites: { type: 'array' },
+    emails: { type: 'array' },
+    twitters: { type: 'array' },
+    facebooks: { type: 'array' },
+    phones: { type: 'array' },
+    bio: { type: 'longtext' },
+    lastElectedDate: { type: 'date' },
+    nextElectionDate: { type: 'date' },
 
-//     district
-//     counties (relation to Counties)
-// votes (relation to Votes)
-// amendments (relation to Bills)
-// photos
-// websites
-// emails
-// twitters
-// facebooks
-// phones
-// bio/background
-// news (relation to News)
-// caucus memberships
-// party
-// last-elected-date
-// next-election-date
-// opinion/commentary articles (relation to Blog)
-// "scores" (much to be decided there; see above)
+    votes: {
+      collection: 'vote',
+      via: 'voters'
+    },
 
+    counties: {
+      collection: 'county',
+      via: 'representatives'
+    },
+
+    articles: {
+      collection: 'news',
+      via: 'subjects'
+    }
   }
 };
 

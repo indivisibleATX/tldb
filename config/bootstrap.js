@@ -8,10 +8,20 @@
  * For more information on bootstrapping your app, check out:
  * http://sailsjs.org/#!/documentation/reference/sails.config/sails.config.bootstrap.html
  */
+module.exports.bootstrap = function (cb) {
 
-module.exports.bootstrap = function(cb) {
+  if (process.env.NODE_ENV !== 'development')
+    return cb();
 
-  // It's very important to trigger this callback method when you are finished
-  // with the bootstrap!  (otherwise your server will never lift, since it's waiting on the bootstrap)
-  cb();
+  // use number of Legislators as a proxy for any data present
+  Legislator.count().exec((error, found) => {
+    if (found > 0) {
+      console.log(`Skipping seeding, there are already ${found} legislators in TLDB.`);
+    }
+    else {
+      require('./seed').seed();
+    }
+  });
+
+  return cb();
 };
